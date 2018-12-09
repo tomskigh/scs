@@ -1,0 +1,29 @@
+<style>
+    label:hover {
+        background-color: lightcyan;
+    }
+</style>
+
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="col-sm-4 text-center">
+            <!-- permanent hours of medical visits list = phomv_list-->
+            {% for hour in phomv_list %}
+                {% if hour in valid_hour_list %}
+                    <code class="lead"><label style="color: darkgrey"><input type="radio" name="hour_of_visit" value="{{ hour }}" disabled> {{ hour }}</label></code><br>
+                {% else %}
+                    <code class="lead"><label><input type="radio" name="hour_of_visit" value="{{ hour }}"> {{ hour }}</label></code><br>
+                {% endif %}
+            {% endfor %}
+            {% if valid_hour_list == phomv_list %}
+                <div class="btn-group btn-group-sm">
+                    <a class="btn btn-danger" href="{% url 'medical_visit:medical_staff_view' patient_id spec %}"><span class="glyphicon glyphicon-step-backward"></span> Back to doctor choice</a>
+                </div>
+            {% else %}
+                <div class="btn-group btn-group-lg">
+                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                </div>
+            {% endif %}
+        </div>
+    </form>

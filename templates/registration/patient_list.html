@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Registartion patient{% endblock %}
+
+{% block head %}
+    <style>
+        .modal-header, h4 {
+            background-color: lightblue;
+            color: crimson;
+            text-align: center;
+            font-size: 40px;
+            padding: 10px 10px;
+        }
+        .modal-body {
+            background-color: aliceblue;
+            text-align: center;
+            font-size: 18px;
+            padding: 10px 10px;
+        }
+        .modal-footer {
+            background-color: aliceblue;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="btn-group-vertical">
+                    <a class="btn btn-primary btn-lg" href="{% url 'registrations:add_patient' %}"><span class="glyphicon glyphicon-eye-open"></span> Register new patient</a>
+                    <a class="btn btn-warning btn-lg" href="{% url 'index' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to login</a>
+                    <a class="btn btn-success btn-lg" href="{% url 'medicals_presence' %}"><span class="glyphicon glyphicon-heart"></span> Medical presence</a>
+                    {% if visit %}
+                        <a class="btn btn-default btn-lg" data-toggle="modal" data-target="#emailModal" href="{% url 'registrations:send_email' %}" style="color: crimson"><span class="glyphicon glyphicon-envelope"></span> Send absence email</a>
+                    {% else %}
+                        <a class="btn btn-default btn-lg" id="mysend" href="#" style="background-color: honeydew" disabled><span class="glyphicon glyphicon-envelope" disabled></span> Send absence email</a>
+                    {% endif %}
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#infoModal"><span class="glyphicon glyphicon-education"></span> Info</button>
+                    <a class="btn btn-danger btn-lg" data-toggle="modal" data-target="#exitModal" href="{% url 'exit' %}"><span class="glyphicon glyphicon-log-out"></span> Exit</a>
+                </div>
+                <!-- emailModal to run absence_email tag -->
+                <div class="modal" id="emailModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        {% include 'registration/absence_email.html' %}
+                    </div>
+                </div>
+                <!-- infoModal -->
+                <div class="modal" id="infoModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <p class="modal-title" style="color: darkgreen"><strong>Informations</strong></p>
+                            </div>
+                            <div class="modal-body">
+                                <p>If search name do not appears on the list please register new patient.<br>If patient is ensured name cell background color is <strong style="color: green">green</strong> else is <strong style="color: darkred">red.</strong></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger btn-md" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- exitModal -->
+                <div class="modal" id="exitModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <p class="modal-title" style="color: crimson"><strong>EXIT</strong></p>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong style="color: darkblue">You try to leave aplication!</strong><br><br><strong style="color: mediumblue">Are you sure?</strong></p>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="btn-group">
+                                    <a class="btn btn-danger btn-md" href="{% url 'exit' %}"><span class="glyphicon glyphicon-remove"></span> Exit</a>
+                                    <a class="btn btn-success btn-md" href="{% url 'registrations:register' %}"><span class="glyphicon glyphicon-step-backward"></span> Back</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-10">
+                <p class="lead well" style="background-color: antiquewhite"><strong style="color: green">Enter the patient's data to search...</strong></p>
+
+                <div class="input-group">
+                    <input class="form-control" id="myInput" type="text" placeholder="Search.."><br>
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" style="background-color: lightblue">
+                            <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead style="background-color: cadetblue">
+                        <tr>
+                            {% for head in heads %}<th>{{ head }}</th>{% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody id="patientTable">
+                        {% for patient in patients %}
+                            <tr>
+                            {% if patient.ensured %}
+                                <td class="success"><a href="{{ patient.get_absolute_url }}">{{ patient.last_name }} {{ patient.first_name }}</a></td>
+                            {% else %}
+                                <td class="danger"><a href="{{ patient.get_absolute_url }}">{{ patient.last_name }} {{ patient.first_name }}</a></td>
+                            {% endif %}
+                                <td>{{ patient.postal }}</td><td>{{ patient.city }}</td><td>{{ patient.street }}</td><td>{{ patient.phone }}</td>
+                                <td>{{ patient.birthday|date:"l, j F Y" }}</td>
+                                <td>{% if patient.email %}<a href="mailto:{{ patient.email }}?Subject=Your%20medical visit" target="_top">{{ patient.email }}</a>{% else %}<a style="color: #9d9d9d">brak</a>{% endif %}</td>
+                                <td>{% if patient.ensured == True %}<input type="checkbox" checked="checked" disabled>{% else %}<input type="checkbox" disabled>{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

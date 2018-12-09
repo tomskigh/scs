@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+
+{% block title %}Patient register{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+            {% include 'blocks/patient_data.html' %}
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">SPECIALIZATION: {{ spec|capfirst }}</strong></h4>
+                <blockquote>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <table class="table table-hover">
+                            <tbody>
+                                {% for medical in medicals %}
+                                    {% if medical.presence %}
+                                        <tr>
+                                            <td align="right">{{ forloop.counter }}.</td><td><strong><label style="color: crimson"><input type="radio" name="medical_id" value="{{ medical.id }}"> {{ medical.forename }} {{ medical.surname }}</label></strong></td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td align="right">{{ forloop.counter }}</td><td><strong><label style="color: darkgrey"><input type="radio" name="medical_id" value="{{ medical.id }}" disabled> {{ medical.forename }} {{ medical.surname }} (absent)</label></strong></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="btn-group">
+                            <a class="btn btn-primary" href="{% url 'registrations:register_patient_detail' patient_id %}"><span class="glyphicon glyphicon-step-backward"></span> Back to specialization choice</a>
+                            <button type="submit" class="btn btn-md btn-success"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                        </div>
+                    </form>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Register new patient{% endblock %}
+
+{% block head %}
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        var mydata = [
+            {% for city in cities %}
+                {"id": "{{city}}"},
+            {% endfor %}];
+
+        var city = [];
+
+        $.each(mydata, function(key, val) {
+            city.push(val.id);
+            });
+
+        $( function() {
+        $( "#cities" ).autocomplete({
+            minLength: 2,
+            source: city
+            });
+            });
+
+    </script>
+
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-offset-3 col-sm-6 well" style="background-color: bisque">
+                <pre class="text-center" style="color: crimson"><strong>A D D   N E W   P A T I E N T   F O R M</strong></pre>
+                <form id="patient_detail" action="{% url 'registrations:add_patient' %}" method="POST">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+                    {% buttons %}
+                        <div class="btn-group btn-group-md">
+                            <button class="btn btn-danger" type="submit"><span class="glyphicon glyphicon-ok"></span> Register</button>
+                            <a class="btn btn-primary" href="{% url 'registrations:register' %}"><span class="glyphicon glyphicon-step-backward"></span> Back</a>
+                        </div>
+                    {% endbuttons %}
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+
+{% block title %}Medical Patients Advice{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">Dr {{ doctor.forename }} {{ doctor.surname }}, {{ doctor.specialization }}, office: {{ doctor.consulting_room}}</strong></h4>
+
+                <blockquote>
+                    <h4 style="color: darkgreen"><strong style="border-bottom: double 3px;">List of patients on {{ now|date:"l, F j, Y" }}</strong></h4>
+                    <table class="table table-hover">
+                        <tbody>
+                            {% for visit in visits %}
+                                <tr>
+                                    <td align="right">{{ forloop.counter }}.</td><td><a href="{{ visit.get_absolute_url }}"> {{ visit.patient.last_name }} {{ visit.patient.first_name }}</a></td><td style="color: crimson"><strong>{{ visit.hour_of_visit }}</strong></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <nav aria-label="VisitPaginator">
+                        <ul class="pagination">
+                            {% if visits.has_previous %}
+                                <li>
+                                    <a href="?page={{ visits.previous_page_number }}">&laquo;</a>
+                                </li>
+                            {% endif %}
+                            <li>
+                                {% if visits %}
+                                    <a href="#">Page {{ visits.number }} of {{ visits.paginator.num_pages }}</a>
+                                {% else %}
+                                    <a>No pages</a>
+                                {% endif %}
+                            </li>
+                            {% if visits.has_next %}
+                                <li>
+                                    <a href="?page={{ visits.next_page_number }}">&raquo;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </blockquote>
+            </div>
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">MEDICAL PATIENTS ADVICE</strong></h4>
+                <blockquote>
+                    {% if visits %}
+                        <h4 style="color: crimson"><strong style="border-bottom: double 3px;">Select a patient to continue...</strong></h4><br>
+                    {% else %}
+                        <h4 style="color: crimson"><strong style="border-bottom: double 3px;">There are not patients waiting for medical visit...</strong></h4><br>
+                    {% endif %}
+                        <div class="btn-group btn-group-lg">
+                            <a class="btn btn-primary" href="{% url 'index' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to the login site...</a>
+                            <a class="btn btn-danger" href="{% url 'exit' %}"><span class="glyphicon glyphicon-remove-sign"></span> Exit</a>
+                        </div>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

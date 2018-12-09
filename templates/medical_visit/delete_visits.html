@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+
+{% block title %}Patient visits remove{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+            {% include 'blocks/patient_data.html' %}
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">VISITS</strong></h4>
+                <blockquote>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        {% for visit in visits %}
+                                            <tr>
+                                                <td><label style="color: crimson"><input type="checkbox" name="visit" value="{{ visit.id }}"> {{ visit.doctor }} ({{ visit.doctor.specialization }}), {{ visit.date_of_visit|date:"d.m.Y" }}, {{ visit.hour_of_visit }}</label></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <br>
+                                {% if visits %}
+                                    <div class="btn-group btn-group-md">
+                                        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                                        <a class="btn btn-primary" href="{% url 'registrations:register_patient_detail' patient_id %}"><span class="glyphicon glyphicon-step-backward"></span> Back to register</a>
+                                    </div>
+                                {% else %}
+                                    <h4 style="color: crimson"><strong>Caution!<br><br>No visit(s) for today and on future are registred!!!</strong><br><br></h4>
+                                    <div class="btn-group btn-group-md">
+                                        <a class="btn btn-info" href="{% url 'registrations:register_patient_detail' patient_id %}"><span class="glyphicon glyphicon-step-backward"></span> Back to register</a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

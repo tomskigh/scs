@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+
+{% block title %}Patient detail{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+            {% include 'blocks/patient_data.html' %}
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">SPECIALIZATION</strong></h4>
+                {% if patient.ensured %}
+                    <blockquote>
+                        <form action="." method="post">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                <div class="radio" style="color: darkgreen">
+                                    {% bootstrap_field field size='large' form_group_class="lead" %}
+                                </div>
+                            {% endfor %}
+                            {% buttons %}
+                                <div class="btn-group btn-group-md">
+                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                                </div>
+                            {% endbuttons %}
+                        </form>
+                    </blockquote>
+                {% else %}
+                    <blockquote>
+                        <h4 style="color: crimson"><strong style="border-bottom: double 3px;">Caution!!!</strong><br><br><strong>The patient is uninsured!</strong><br><strong>Registration can not be continued...</strong><br><br></h4>
+                    </blockquote>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

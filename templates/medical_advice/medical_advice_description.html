@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+
+{% block title %}Medical Patients Advice{% endblock %}
+
+{% block head %}
+
+    <style>
+        td:hover {
+            background-color: whitesmoke;
+        }
+    </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">Dr {{ doctor.forename }} {{ doctor.surname }}, {{ doctor.specialization }}, office: {{ doctor.consulting_room}}</strong></h4>
+
+                <blockquote>
+                    <h4 style="color: darkgreen"><strong style="border-bottom: double 3px;">Data of visit: {{ now|date:"l, F j, Y" }}</strong></h4>
+                    <table class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td>Patient:</td><td style="color: crimson"><strong>{{ patient.first_name }} {{ patient.last_name }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Email: </td><td><strong>{% if patient.email %}<a href="mailto:{{ patient.email }}?subject=Your medical visit?body=Odnotowaliśmy brak obecności na dzisiejszej wizycie: Imię i nazwisko: {{ patient.first_name }} {{ patient.last_name }}; Lekarz: {{ doctor.forename }} {{ doctor.surname }}; Data wizyty: {{ now|date:"F j, Y" }}; Godzina wizyty: {{ visit.hour_of_visit|date:"l, F j, Y" }}; Gabinet: {{ doctor.consulting_room }}" target="_top">{{ patient.email }}</a>{% else %}<a style="color: #9d9d9d">brak</a>{% endif %}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Phone:</td><td style="color: crimson"><strong>{{ patient.phone }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Hour of visit:</td><td style="color: crimson"><strong>{{ visit.hour_of_visit }}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+{#                    <div class="btn-group btn-group-lg">#}
+{#                        <a class="btn btn-primary" href="#"><span class="glyphicon glyphicon-folder-open"></span> Patient file</a>#}
+{#                        <a class="btn btn-danger" href="{% url 'exit' %}"><span class="glyphicon glyphicon-remove-sign"></span> Exit</a>#}
+{#                    </div>#}
+                </blockquote>
+            </div>
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">MEDICAL PATIENTS ADVICE</strong></h4>
+                <blockquote>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% bootstrap_field form.symptoms placeholder='Enter all symptoms of ill...' %}
+                        {% bootstrap_field form.recommendations placeholder='Enter the recommended medications...' %}
+                        {% bootstrap_field form.prescribed_medicines placeholder='Enter the prescribed_medicines...' %}
+                        {% bootstrap_field form.discount field_class='radio-inline' %}<br>
+
+                        {% if prescribed_medicines %}
+                            <div class="btn-group btn-group-lg">
+                                <a class="btn btn-primary" href="{% url 'medical_advice:advice' doctor.nickname %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patient list</a>
+                                <a class="btn btn-warning" href="{% url 'medical_advice:medical_prescription_detail' doctor.nickname patient.id %}"><span class="glyphicon glyphicon-list-alt"></span> Prescription</a>
+                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                            </div>
+                        {% else %}
+                            <div class="btn-group btn-group-lg">
+                                <a class="btn btn-primary" href="{% url 'medical_advice:advice' doctor.nickname %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patient list</a>
+                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                            </div>
+                        {% endif %}
+                    </form>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

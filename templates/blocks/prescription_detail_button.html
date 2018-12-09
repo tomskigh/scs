@@ -1,0 +1,12 @@
+
+<div class="col-sm-4">
+    <div class="btn-group-vertical btn-group-md pull-right">
+        <a id="printButton" class="btn btn-success" href="#" onclick="window.print();"><span class="glyphicon glyphicon-print"></span> Print...</a>
+        {% if patient.email %}
+            <a id="printButton" class="btn btn-danger" href="{% url 'medical_advice:medical_prescription_pdf' doctor.nickname patient.id %}"><span class="glyphicon glyphicon-send"></span> E-mail to patient</a>
+        {% else %}
+            <a id="printButton" class="btn btn-danger" disabled><span class="glyphicon glyphicon-send"></span> E-mail to patient</a>
+        {% endif %}
+        <a id="printButton" class="btn btn-primary" href="{% url 'medical_advice:advice' doctor.nickname %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patient list</a>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="col-lg-6">
+    <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">PATIENT REGISTER</strong></h4>
+    <blockquote>
+        <table class="table table-hover">
+            <tbody>
+                <tr>
+                    <td><strong>Forename: </strong></td><td><strong style="color: crimson">{{ patient.first_name }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Surname: </strong></td><td><strong style="color: crimson">{{ patient.last_name }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Birthday: </strong></td><td><strong style="color: crimson">{{ patient.birthday|date:"l, j F Y" }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>City: </strong></td><td><strong style="color: crimson">{{ patient.postal }} {{ patient.city }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Street: </strong></td><td><strong style="color: crimson">ul. {{ patient.street }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Phone: </strong></td><td><strong style="color: crimson">{{ patient.phone }}</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Email: </strong></td><td><strong><a href="mailto:{{ patient.email }}?subject=Your medical visit?body=Potwierdzamy wizytę: Imię i nazwisko: {{ patient.first_name }} {{ patient.last_name }}; Lekarz: {{ medical.forename }} {{ medical.surname }}; Data wizyty: {{ date_of_visit|date:"F j, Y" }}; Godzina wizyty: {{ hour_of_visit }}; Gabinet: {{ medical.consulting_room }}" target="_top">{{ patient.email }}</a></strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Ensured: </strong></td><td><strong style="color: crimson">{% if patient.ensured %}Yes{% else %}No{% endif %}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        {% if patient.ensured and visits %}
+            <div class="btn-group btn-group-md">
+                <a class="btn btn-warning" href="{% url 'registrations:change_data_patient' patient_id %}"><span class="glyphicon glyphicon-user"></span> Change patient's data</a>
+                <a class="btn btn-primary" href="{% url 'registrations:register' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patients list</a>
+                <a class="btn btn-danger" href="{% url 'medical_visit:visit_delete' patient_id %}"><span class="glyphicon glyphicon-remove"></span> Visits</a>
+            </div>
+        {% else %}
+            <div class="btn-group btn-group-md">
+                <a class="btn btn-warning" href="{% url 'registrations:change_data_patient' patient_id %}"><span class="glyphicon glyphicon-user"></span> Change patient's data</a>
+                <a class="btn btn-primary" href="{% url 'registrations:register' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patients list</a>
+                <a class="btn btn-danger" href="#" disabled><span class="glyphicon glyphicon-remove"></span> Visits</a>
+            </div>
+        {% endif %}
+    </blockquote>
+</div>

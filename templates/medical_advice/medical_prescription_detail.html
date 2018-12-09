@@ -1,0 +1,15 @@
+{%  extends 'base.html' %}
+
+{% block title %}Recepta{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4"></div>
+        {% include 'blocks/medical_prescription.html' %}
+        <br>
+        {% include 'blocks/prescription_detail_button.html' %}
+    </div>
+</div>
+{% endblock %}
+

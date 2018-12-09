@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+
+{% block title %}Medical Persence{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+            {% include 'blocks/medical_presence_buttons.html' %}
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">MEDICALS {{ spec|upper }} PRESENCE </strong></h4>
+                <blockquote>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                            <table class="table table-hover">
+                                <tbody>
+                                {% for medical in medicals %}
+                                    {% if medical.presence %}
+                                        <tr>
+                                            <td align="right">{{ forloop.counter }}.</td><td><label style="color: crimson"><input type="checkbox" name="presence" value="{{ medical.id }}" checked> {{ medical.forename }} {{ medical.surname }}</label></td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td align="right">{{ forloop.counter }}.</td><td><label style="color: darkgrey"><input type="checkbox" name="presence" value="{{ medical.id }}"> {{ medical.forename }} {{ medical.surname }} (absent)</label></td>
+                                        </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                        {% if medicals %}
+                            <div class="btn-group btn-group-lg">
+                                <a class="btn btn-primary " href="{% url 'registrations:register' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patient's list</a>
+                                <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-refresh"></span> Confirm</button>
+                            </div>
+                        {% else %}
+                            <h4 style="color: crimson"><strong>Caution!<br><br>Please choice specialization to check absence doctors!</strong><br><br></h4>
+                            <div class="btn-group btn-group-lg">
+                            <a class="btn btn-primary" href="{% url 'registrations:register' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patient's list</a>
+                        </div>
+                        {% endif %}
+                    </form>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+
+{% block title %}Patient register{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+            {% include 'blocks/patient_data.html' %}
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">SPECIALIZATION: {{ spec|capfirst }}</strong></h4>
+                <div class="row">
+                    {% if hour_of_visit %}
+                        <div class="col-sm-10">
+                            <blockquote>
+                                <h4 style="color: darkgreen"><strong style="border-bottom: double 3px;">Your choice</strong><br><br>Dr:<strong> {{ doctor.forename }} {{ doctor.surname }}</strong><br>date of visit:<strong> {{ date_of_visit|date:"l, F j, Y" }}</strong><br>hour of visit:<strong> {{ hour_of_visit }}</strong><br>consulting room:<strong> {{ doctor.consulting_room }}</strong></h4>
+                                <div class="btn-group btn-group-md">
+                                    <a class="btn btn-primary" href="{% url 'registrations:register_patient_detail' patient_id %}"><span class="glyphicon glyphicon-step-backward"></span> Back to specialization choice</a>
+                                </div>
+                            </blockquote>
+                        </div>
+                    {% else %}
+                        <div class="col-sm-8">
+                            <blockquote>
+                                {% if valid_hour_list == phomv_list %}
+                                    <h4 style="color: darkgray"><strong style="border-bottom: double 3px;">Your choice</strong><br><br>Dr:<strong> {{ doctor.forename }} {{ doctor.surname }}</strong><br>date of visit:<strong> {{ date_of_visit|date:"F j, Y" }}</strong><br>consulting room:<strong> {{ doctor.consulting_room }}</strong><br><br></h4>
+                                    <h4 style="color: crimson"><strong style="border-bottom: double 3px;">Caution!!!</strong><br><br><strong>All hours of doctor's visits are occupied!</strong><br><strong>Registration can not be continued...</strong><br><br></h4>
+                                {% else %}
+                                    <h4 style="color: darkgreen"><strong style="border-bottom: double 3px;">Your choice</strong><br><br>Dr:<strong> {{ doctor.forename }} {{ doctor.surname }}</strong><br>date of visit:<strong> {{ date_of_visit|date:"F j, Y" }}</strong><br>consulting room:<strong> {{ doctor.consulting_room }}</strong><br><br></h4>
+                                {% endif %}
+                                <div class="btn-group btn-group-md">
+                                    <a class="btn btn-primary btn-block" href="{% url 'medical_visit:visit_date_register' patient_id spec medical_id %}"><span class="glyphicon glyphicon-step-backward"></span> Back to date choice</a>
+                                </div>
+                            </blockquote>
+                        </div>
+                    {% include 'blocks/hour_forms.html' %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

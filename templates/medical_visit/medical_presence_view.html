@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+
+{% block title %}Patient register{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+            {% include 'blocks/medical_presence_buttons.html' %}
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">MEDICALS PRESENCE</strong></h4>
+                <blockquote>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {% for medical in medicals %}
+                            <div class="checkbox">
+                                {% if medical.presence %}
+                                    <code><label><input type="checkbox" name="presence" value="{{ medical.id }}" checked> {{ medical.forename }} {{ medical.surname }}</label></code><br>
+                                {% else %}
+                                    <code><label style="color: darkgrey"><input type="checkbox" name="presence" value="{{ medical.id }}"> {{ medical.forename }} {{ medical.surname }} (absent)</label></code><br>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        {% if medicals %}
+                            <div class="btn-group btn-group-md">
+                                <a class="btn btn-info" href="{% url 'registrations:register' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patient's list</a>
+                                <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-refresh"></span> Confirm</button>
+                            </div>
+                        {% else %}
+                            <h4 style="color: crimson"><strong>Caution!<br><br>Please select a medical specialization</strong><br><br></h4>
+                            <div class="btn-group btn-group-md">
+                            <a class="btn btn-info" href="{% url 'registrations:register' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to patient's list</a>
+                        </div>
+                        {% endif %}
+                    </form>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+{% endblock %}

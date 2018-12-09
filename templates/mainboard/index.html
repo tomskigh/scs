@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+{% block title %}Login{% endblock %}
+
+{% block head %}
+    <style>
+        .modal-header, h4 {
+            background-color: #5cb85c;
+            color:white !important;
+            text-align: center;
+            font-size: 30px;
+            padding: 35px 50px;
+        }
+        .modal-body {
+            padding: 40px 50px;
+        }
+        .modal-footer {
+            background-color: #f9f9f9;
+        }
+    </style>
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="jumbotron text-center">
+        <h1>Small Clinic</h1>
+        <p>Application to handle small clinics</p>
+    </div>
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col-lg-4 col-sm-offset-4">
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-lg" id="myBtn"><span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    {% if request.user.is_superuser %}
+                        <a class="btn btn-warning btn-lg" href="{% url 'admin_site' %}"><span class="glyphicon glyphicon-eye-open"></span> Admin Only</a>
+                    {% else %}
+                        <a class="btn btn-warning btn-lg disabled" href="{% url 'admin_site' %}"><span class="glyphicon glyphicon-eye-open"></span> Admin Only</a>
+                    {% endif %}
+                    <a class="btn btn-danger btn-lg" href="{% url 'exit' %}"><span class="glyphicon glyphicon-remove-sign"></span> Exit</a>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4><span class="glyphicon glyphicon-lock"></span> Login</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'login' %}" method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                        <input id="user" type="text" class="form-control" name="username" placeholder="username">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input id="password" type="password" class="form-control" name="password" placeholder="password">
+                                    </div>
+                                </div>
+                                <br><br>
+                                    <button type="submit" class="btn btn-success btn-block btn-lg"><span class="glyphicon glyphicon-off"></span> Login</button>
+                                    <input type="hidden"/>
+                            </form>
+                        </div>
+                        <!-- Modal footer-->
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+                            {% if request.user.is_authenticated %}
+                                <p>Change <a href="{% url 'password_change' %}">Password?</a></p>
+                            {% else %}
+                                <p>Not a member? Notify the <a href="mailto:tomski@unikolor.com?Subject=User login&body=Please create my user login" target="_top">Admin.</a></p>
+                                <p>Change <a href="#" data-toggle="tooltip">Password?</a></p>
+                                <p>Forgot <a href="{% url 'password_reset' %}">Password?</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row wow fadeInUpBig">
+            <br><br><img src="{% static 'images/live_star.png' %}">
+        </div>
+    </div>
+
+{% endblock %}

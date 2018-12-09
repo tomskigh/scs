@@ -1,0 +1,215 @@
+{% load utility_tags %}
+{% load static %}
+
+  <style>
+      .tab {
+    	    border:2px solid black;
+    	    width:530px;
+    	    border-collapse:collapse;
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            }
+      .tab tr td {
+    	    padding: 5px;
+    	    color: black;
+    	    }
+      .border-right {
+    	    border-right:2px solid black;
+    	    }
+      .border-bottom {
+    	    border-bottom:2px solid black;
+    	    }
+        .dash {
+    	    border-right:1px dashed black;
+    	    border-bottom:1px dashed black;
+    	    }
+        @media print {
+            #printButton {
+            display: none;}
+            }
+        .crop_clinic {
+            width: 250px;
+            height: 50px;
+            overflow: hidden;
+        }
+        .crop_med {
+            width: 180px;
+            height: 40px;
+            overflow: hidden;
+        }
+    </style>
+
+    <div class="col-sm-4">
+        <table class="tab">
+            <tr>
+                <td width="80"><strong><small>Recepta {{ advice.id }}</small></strong></td>
+                <td width="450"></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><div align="center"><h1>SMALL CLINIC</h1></div></td>
+            </tr>
+            <tr>
+                <td colspan="2"><div align="center"><strong>Application for handle small clinic</strong></div></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td><strong><small>Świadczeniodawca:</small></strong></td><td><img src="{% static 'images/barcode_svg.svg' %}" class="crop_clinic"></td>
+            </tr>
+        </table>
+        <table class="tab">
+            <tr>
+                <td class="border-right" width="330"><strong><small>Pacjent</small></strong></td>
+                <td  width="200"><strong><small>Oddział NFZ</small></strong></td>
+            </tr>
+            <tr>
+                <td class="border-right">{{ patient.first_name }} {{ patient.last_name }}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="border-right">{{ patient.postal }} {{ patient.city }}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="border-right">{{ patient.street }}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="border-right">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="border-right">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="border-right">&nbsp;</td>
+                <td><strong>&nbsp;</strong></td>
+            </tr>
+            <tr>
+                <td class="border-right"><small><strong>Pesel: </strong>{{ patient.birthday|pesel }}</small></td>
+                <td><strong><small>Uprawnienia dodatkowe:</small></strong></td>
+            </tr>
+        </table>
+        <table class="tab" >
+            <tr>
+                <td width="330" class="dash"><strong><small>Rp</small></strong></td>
+                <td width="200" class="dash"><strong><small>Odpłatność</small></strong></td>
+            </tr>
+            {% for medicine in medicines %}
+                <tr>
+                    <td class="dash">{{ medicine }}</td>
+                    <td class="dash">{{ advice.discount }}</td>
+                </tr>
+            {% endfor %}
+
+            {% if medicines|length == 1 %}
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+            {% elif medicines|length == 2 %}
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+            {% elif medicines|length == 3 %}
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+                <tr>
+                    <td class="dash">&nbsp;</td>
+                    <td class="dash">&nbsp;</td>
+                </tr>
+            {% endif %}
+            <tr><td rowspan="4" class="dash">&nbsp;</td><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
+            <tr><td>&nbsp;</td></tr>
+        </table>
+        <table class="tab">
+            <tr>
+                <td width="330" class="border-right"><strong><small>Data wystawienia:</small></strong></td>
+                <td width="200"><strong><small>Dane i podpis lekarza</small></strong></td>
+            </tr>
+            <tr>
+                <td class="border-right">{{ visit.date_of_visit|date:'d.m.Y' }}</td>
+                <td>Spec: {{ doctor.specialization.type_of_specialization }}</td>
+            </tr>
+            <tr>
+                <td class="border-right border-bottom">&nbsp;</td>
+                <td>Imię: {{ doctor.forename }}</td>
+            </tr>
+            <tr>
+                <td class="border-right"><strong><small>Data realizacji &quot;od dnia&quot;:</small></strong></td>
+                <td>Nazwisko: {{ doctor.surname }}</td>
+            </tr>
+            <tr>
+                <td class="border-right">{{ now|realization }}</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="border-right">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="border-right">&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td class="border-right">&nbsp;</td>
+                <td><img src="{% static 'images/barcode_med.svg' %}" class="crop_med"></td>
+            </tr>
+            <tr>
+                <td class="border-right">&nbsp;</td>
+                <td><strong><small>Dane podmiotu drukującego:</small></strong></td>
+            </tr>
+        </table>
+    </div>

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+
+            <div class="col-lg-6">
+                {% if form %}
+                    <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">MEDICALS ADD FORM</strong></h4>
+                    <blockquote>
+                        <h4 style="color: darkgreen"><strong style="border-bottom: double 3px;">Please input new medical's data...</strong></h4><hr>
+                        <form action="" method="post">
+                            {% csrf_token %}
+                                {% bootstrap_field form.specialization %}
+                                {% bootstrap_field form.forename placeholder='Input forename of medical' %}
+                                {% bootstrap_field form.surname placeholder='Input surname of medical' %}
+                                {% bootstrap_field form.email placeholder='Input a valid email of medical' %}
+                                {% bootstrap_field form.consulting_room placeholder='Input number of consulting_room' %}
+                            <div class="btn-group btn-group-lg">
+                                <a class="btn btn-primary" href="{% url 'admin_site' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to admin dashboard</a>
+                                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                            </div>
+                        </form>
+                    </blockquote>
+                {% else %}
+                    {% if medical %}
+                        <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">NEW DATA OF DOCTOR</strong></h4>
+                        <blockquote>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Forename: </strong></td><td><code class="lead">{{ forename }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Surname: </strong></td><td><code class="lead">{{ surname }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Specialization: </strong></td><td><code class="lead">{{ specialization }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Consulting room: </strong></td><td><code class="lead">{{ consulting_room }}</code></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>E-mail: </strong></td><td><code class="lead"><a href="mailto:{{ email }}?subject=Potwierdzamy rejestrację w bazie danych Small-Clinic?body=Potwierdzamy rejestrację: Imię i nazwisko: {{ forename }} {{ surname }}; Specialization: {{ specialization }}; Consulting room: {{ consulting_room }}; Nickname: {{ nickname }}; Password: {{ password }}" target="_top">{{ email }}</a></code></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </blockquote>
+                    {% else %}
+                        <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">NEW DATA OF DOCTOR</strong></h4>
+                        <blockquote>
+                            <p class="lead text-justify">The consulting room is not avaiable. Please back to the form and input  consulting room number grower then {{ conrooms }}.</p>
+                            <div class="btn-group btn-group-lg btn-group-justified">
+                                <a class="btn btn-danger" href="{% url 'medical_visit:medical_add_view' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to form...</a>
+                            </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">GENERATED MEDICAL CREDENTIALS</strong></h4>
+                <blockquote>
+                    {% if nickname and password %}
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Nickname: </strong></td><td><code class="lead">{{ nickname }}</code></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Password: </strong></td><td><code class="lead">{{ password }}</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="btn-group btn-group-lg">
+                            <a class="btn btn-primary" href="{% url 'index' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to login...</a>
+                            <a class="btn btn-info btn-lg" href="{% url 'medical_visit:medical_add_view' %}"><span class="glyphicon glyphicon-heart"></span> Add new doctor</a>
+                        </div>
+                    {% else %}
+                        <h4 style="color: darkgreen"><strong style="border-bottom: double 3px;">There are no data to show...</strong></h4><hr>
+                        <div class="btn-group btn-group-lg">
+                            <a class="btn btn-primary" href="{% url 'index' %}"><span class="glyphicon glyphicon-step-backward"></span> Back to login...</a>
+                        </div>
+                    {% endif %}
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

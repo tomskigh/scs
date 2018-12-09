@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Small clinic | {% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <!-- search table-->
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {var value =
+                $(this).val().toLowerCase();
+            $("#patientTable").find("tr").filter(function() {
+                $(this).toggle(
+                    $(this).text().toLowerCase().indexOf(value) > -1)})
+            ;})
+            ;});
+    </script>
+
+    <!-- open Modal-->
+    <script>
+        $(document).ready(function(){
+            $("#myBtn").click(function(){
+                $("#myModal").modal()
+                ;})
+            ;});
+    </script>
+
+    <!-- open tooltip with HTML context-->
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip({
+                title: "<p><strong>Caution!</strong><br><em>You have to<br>login first.</em></p>", html: true, placement: "right"})
+            ;});
+    </script>
+
+    <!-- open mysend with info about absence e-mails-->
+    <script>
+        $(document).ready(function(){
+            $('#mysend').tooltip({
+                title: "<p><em>Nothing to send...</em></p>", html: true, placement: "right"})
+            ;});
+    </script>
+
+    <!-- hide message after hideTime: seconds-->
+    <script>
+        function hideAfterSomeTime(hideTime) {
+	        // 10000 = 10 seconds
+	        window.setTimeout("document.getElementById('short-time-msg').style.display='none'", (hideTime)?hideTime:2000);
+        }
+    </script>
+
+    <script>
+        $(document).ready(function showAfterTime() {
+            $("#after-time-msg").delay(2000).fadeIn(500);
+        });
+    </script>
+    {% block extrastyle %}{% endblock %}
+    {% block head %}{% endblock %}
+    {{ form.media }}
+</head>
+
+<body>
+
+    {% block header %}
+    {% endblock %}
+
+    {% block section %}
+
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-4 col-sm-offset-4">
+                    <br>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div id="short-time-msg" class="alert alert-danger alert-dismissable fade in">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                {{ message }}<script>hideAfterSomeTime()</script>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+
+</body>
+</html>

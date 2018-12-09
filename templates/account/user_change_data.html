@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}User data change{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row well" style="background-color: bisque">
+            <h1 class="text-center">Small Clinic</h1>
+            <p class="text-center">Application to handle small clinics</p>
+
+            <div class="col-lg-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">MEDICALS</strong></h4>
+                <blockquote>
+                    <p><strong style="color: green">Enter the medical's data to search...</strong></p>
+
+                    <div class="input-group">
+                        <input class="form-control" id="myInput" type="text" placeholder="Search.."><br>
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit" style="background-color: lightblue">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-hover">
+                        <tbody id="patientTable">
+                        {% for medical in medicals %}
+                            <tr>
+                                <td><a href="{{ medical.get_absolute_url }}">{{ forloop.counter }}. {{ medical}}</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <a class="btn btn-primary btn-block btn-lg" href="{% url 'admin_site' %}"><span class="glyphicon glyphicon-backward"></span> Back to admin site...</a>
+                </blockquote>
+            </div>
+            <div class="col-sm-6">
+                <h4 class="text-center well" style="background-color: aquamarine"><strong style="color: crimson">CHANGE MEDICAL'S USER DATA</strong></h4>
+                <blockquote>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {% bootstrap_field field size='large' form_group_class="lead" show_label=False %}
+                        {% endfor %}
+                            <div class="btn-group btn-group-justified">
+                                <div class="btn-group">
+                                    <button type="submit" class="btn btn-success btn-block btn-lg"><span class="glyphicon glyphicon-ok"></span> Confirm</button>
+                                </div>
+                                <a href="{% url 'admin_site' %}" class="btn btn-primary btn-block btn-lg">Back to admin site...</a>
+                            </div>
+                    </form>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

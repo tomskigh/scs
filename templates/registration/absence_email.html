@@ -1,0 +1,35 @@
+
+<!-- Modal content-->
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <p class="modal-title" style="color: darkgreen"><strong>SENDING E-MAIL(S)...</strong></p>
+    </div>
+    <div class="modal-body">
+        {% if absence %}
+            <code class="lead">Successful sending email(s) for following addresses:</code><br>
+            {% for recipient in recipients.values|dictsort:1 %}
+                {% if recipient %}
+                    <table>
+                        <tr>
+                            <td style="color: darkblue">{{ recipient }}</td>
+                        </tr>
+                    </table>
+                {% else %}
+                    <code class="lead">No data to send...</code><br>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <code class="lead">Looking for data...</code><br>
+        {% endif %}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger btn-md" data-dismiss="modal" onclick="refreshFunction()">Exit</button>
+    </div>
+</div>
+
+<script>
+    function refreshFunction() {
+        location.reload()
+    }
+</script>
