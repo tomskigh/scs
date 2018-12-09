@@ -25,6 +25,7 @@ from medical_advice.models import MedicalAdviceDescription
 
 # create backup all files
 def backup():
+    # path to backup
     path = Path('backup_json\db.json')
     try:
         with open(path, 'w') as jsonfile:
