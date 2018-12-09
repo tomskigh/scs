@@ -23,6 +23,7 @@ from medical_advice.models import MedicalAdviceDescription
 # Create your functions here
 
 
+# create backup all files
 def backup():
     path = Path('backup_json\db.json')
     try:
